@@ -1,19 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using testapi.Models;
-
-public class TestCrontoller : ControllerBase
+[ApiController]
+[Route("/test")]
+public class TestController : ControllerBase
 {
     
     private static List<testModel> _testModel = new List<testModel>
     {
-        new testModel {Id = 1, Name = "Test1"},
-        new testModel {Id = 2, Name = "Test2"}
+        new testModel {Id = Guid.NewGuid(), Name = "Test1"},
+        new testModel {Id = Guid.NewGuid(), Name = "Test2"}
     };
 
-    [HttpGet("/test")]
+    [HttpGet()]
     public IActionResult GetTestModel()
     {
         return Ok(_testModel);
+    }
+
+    [HttpPost]
+    public IActionResult CreateTestModel([FromBody] testModel model)
+    {
+        model.Id = Guid.NewGuid();
+        _testModel.Add(model);
+        return CreatedAtAction(nameof(GetTestModel), new { id = model.Id }, model);
     }
 }
 

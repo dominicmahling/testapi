@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,9 +9,13 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 
+   
+
+
 app.MapControllers();
 
-
+ app.MapOpenApi();
+ app.MapScalarApiReference();
 
 app.Run();
 
