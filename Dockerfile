@@ -16,4 +16,4 @@ COPY --from=build /app/out .
 ENV ASPNETCORE_URLS=http://0.0.0.0:8064
 EXPOSE 8064
 
-ENTRYPOINT ["dotnet", "CSharpWithDocker.dll"]
+ENTRYPOINT ["dotnet", "testapi.dll"]
