@@ -24,6 +24,17 @@ public class TestController : ControllerBase
         _testModel.Add(model);
         return CreatedAtAction(nameof(GetTestModel), new { id = model.Id }, model);
     }
+    [HttpDelete]
+    public IActionResult DeleteTestModel([FromQuery] Guid id)
+    {
+        var model = _testModel.FirstOrDefault(m => m.Id == id);
+        if (model == null)
+        {
+            return NotFound();
+        }
+        _testModel.Remove(model);
+        return NoContent();
+    }   
 }
 
 
