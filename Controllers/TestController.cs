@@ -37,6 +37,8 @@ public class TestController : ControllerBase
         return NoContent();
     }   
 }
+
+[ApiController]
 [Route("api/[controller]")]
 public class ArtikelController : ControllerBase
 {
