@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using testapi.Models;
+using testapi.DBContext;
 [ApiController]
 [Route("/test")]
 public class TestController : ControllerBase
@@ -36,5 +37,28 @@ public class TestController : ControllerBase
         return NoContent();
     }   
 }
+[Route("api/[controller]")]
+public class ArtikelController : ControllerBase
+{
+    private readonly AppDbContext _db;
+
+    public ArtikelController()
+    {
+        _db = new AppDbContext();
+    }
+
+    // GET api/artikel/expensive?preis=50
+    [HttpGet("expensive")]
+    public IActionResult GetTeureArtikel([FromQuery] decimal preis)
+    {
+        var teureArtikel = _db.Artikel
+                              .Where(a => a.ArtikelPreis > preis)
+                              .ToList();
+
+        return Ok(teureArtikel); // gibt JSON zurück
+    }
+
+}
+
 
 
