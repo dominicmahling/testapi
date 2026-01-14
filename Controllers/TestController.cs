@@ -63,8 +63,9 @@ public class ArtikelController : ControllerBase
 
     // GET api/artikel/sell?id=123
     [HttpPost("sell")]
-    public IActionResult GetTeureArtikel([FromQuery] int id)
+    public async Task<IActionResult> GetTeureArtikel([FromQuery] int id)
     {
+        await using var transaction = await _db.Database.BeginTransactionAsync();
         var artikel = _db.Artikel
                               .Where(a => a.Id.Equals(id))
                               .FirstOrDefault();
@@ -77,22 +78,25 @@ public class ArtikelController : ControllerBase
             return BadRequest("Artikel nicht mehr auf Lager");
         }
         artikel.ArtikelBestand -=1;                 
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
+        await transaction.CommitAsync();
         return Ok(artikel); // gibt JSON zurück
     }
 
     [HttpPost("restock")]
-    public IActionResult RestockArtikel([FromQuery] int id, [FromQuery] int menge)
+    public  async Task<IActionResult> RestockArtikel([FromQuery] int id, [FromQuery] int menge)
     {
+        await using var transaction = await _db.Database.BeginTransactionAsync();
         var artikel = _db.Artikel
                               .Where(a => a.Id.Equals(id))
-                              .FirstOrDefault();
+                              .FirstOrDefault();          
         if (artikel == null)
         {
             return NotFound();
         }
         artikel.ArtikelBestand += menge;                 
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
+        await transaction.CommitAsync();
         return Ok(artikel); // gibt JSON zurück
     }
 
