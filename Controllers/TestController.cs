@@ -63,7 +63,7 @@ public class ArtikelController : ControllerBase
 
     // GET api/artikel/sell?id=123
     [HttpPost("sell")]
-    public IActionResult GetTeureArtikel([FromQuery] string id)
+    public IActionResult GetTeureArtikel([FromQuery] int id)
     {
         var artikel = _db.Artikel
                               .Where(a => a.Id.Equals(id))
