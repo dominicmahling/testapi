@@ -81,6 +81,21 @@ public class ArtikelController : ControllerBase
         return Ok(artikel); // gibt JSON zurück
     }
 
+    [HttpPost("restock")]
+    public IActionResult RestockArtikel([FromQuery] int id, [FromQuery] int menge)
+    {
+        var artikel = _db.Artikel
+                              .Where(a => a.Id.Equals(id))
+                              .FirstOrDefault();
+        if (artikel == null)
+        {
+            return NotFound();
+        }
+        artikel.ArtikelBestand += menge;                 
+        _db.SaveChanges();
+        return Ok(artikel); // gibt JSON zurück
+    }
+
 }
 
 
