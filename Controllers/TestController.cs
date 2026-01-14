@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using testapi.Models;
 using testapi.DBContext;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 [ApiController]
 [Route("/test")]
 public class TestController : ControllerBase
@@ -58,6 +59,26 @@ public class ArtikelController : ControllerBase
                               .ToList();
 
         return Ok(teureArtikel); // gibt JSON zurück
+    }
+
+    // GET api/artikel/sell?id=123
+    [HttpPost("sell")]
+    public IActionResult GetTeureArtikel([FromQuery] string id)
+    {
+        var artikel = _db.Artikel
+                              .Where(a => a.Id.Equals(id))
+                              .FirstOrDefault();
+        if (artikel == null)
+        {
+            return NotFound();
+        }
+        if (artikel.ArtikelBestand <= 0)
+        {
+            return BadRequest("Artikel nicht mehr auf Lager");
+        }
+        artikel.ArtikelBestand -=1;                 
+        _db.SaveChanges();
+        return Ok(artikel); // gibt JSON zurück
     }
 
 }
