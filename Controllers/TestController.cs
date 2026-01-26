@@ -45,9 +45,9 @@ public class ArtikelController : ControllerBase
 {
     private readonly AppDbContext _db;
 
-    public ArtikelController()
+    public ArtikelController(AppDbContext db)
     {
-        _db = new AppDbContext();
+        _db = db;
     }
 
     // GET api/artikel/expensive?preis=50

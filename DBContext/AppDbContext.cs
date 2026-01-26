@@ -10,8 +10,9 @@ public class AppDbContext : DbContext
 
         if (string.IsNullOrEmpty(connectionString))
             throw new InvalidOperationException("DB_CONNECTION Environment Variable ist nicht gesetzt!");
-
+        if (!optionsBuilder.IsConfigured){
         optionsBuilder.UseNpgsql(connectionString);
+        }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
